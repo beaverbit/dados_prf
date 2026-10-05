@@ -69,7 +69,7 @@ def grafico_por_mes(df):
     resumo = df.groupby("mes").agg(total=("gravidade", "count")).reset_index()
 
     plt.figure(figsize=(12, 6))
-    sns.barplot(data=resumo, x="mes", y="total", palette="viridis")
+    sns.barplot(data=resumo, x="mes", y="total", palette="viridis", hue="mes", legend=False)
     plt.title(f"Distribuição de acidentes por mês — UF: {UF_FOCO}")
     plt.xlabel("Mês")
     plt.ylabel("Total de acidentes")
@@ -85,7 +85,7 @@ def grafico_por_dia_semana(df):
     resumo = resumo.sort_values("dia_semana")
 
     plt.figure(figsize=(12, 6))
-    sns.barplot(data=resumo, x="dia_semana", y="total", palette="rocket")
+    sns.barplot(data=resumo, x="dia_semana", y="total", palette="rocket", hue="dia_semana", legend=False)
     plt.title(f"Acidentes por dia da semana — UF: {UF_FOCO}")
     plt.xlabel("Dia da semana")
     plt.ylabel("Total de acidentes")
@@ -125,7 +125,8 @@ def grafico_condicao_meteorologica(df):
     ).reset_index().sort_values("total", ascending=False)
 
     plt.figure(figsize=(12, 6))
-    sns.barplot(data=resumo, x="total", y="condicao_metereologica", palette="coolwarm")
+    sns.barplot(data=resumo, x="total", y="condicao_metereologica", palette="coolwarm",
+                hue="condicao_metereologica", legend=False)
     plt.title(f"Acidentes por condição meteorológica — UF: {UF_FOCO}")
     plt.xlabel("Total de acidentes")
     plt.ylabel("Condição meteorológica")
@@ -142,7 +143,7 @@ def grafico_tipo_pista(df):
 
     fig, ax1 = plt.subplots(figsize=(10, 6))
     sns.barplot(data=resumo, x="tipo_pista", y="total", ax=ax1,
-                palette="mako", alpha=0.7)
+                palette="mako", alpha=0.7, hue="tipo_pista", legend=False)
     ax1.set_ylabel("Total de acidentes")
 
     ax2 = ax1.twinx()
@@ -162,7 +163,8 @@ def grafico_top_causas(df):
     ).reset_index().sort_values("total", ascending=False).head(10)
 
     plt.figure(figsize=(12, 7))
-    sns.barplot(data=resumo, x="total", y="causa_acidente", palette="flare")
+    sns.barplot(data=resumo, x="total", y="causa_acidente", palette="flare",
+                hue="causa_acidente", legend=False)
     plt.title(f"Top 10 causas de acidentes — UF: {UF_FOCO}")
     plt.xlabel("Total de acidentes")
     plt.ylabel("")

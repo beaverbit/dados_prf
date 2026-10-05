@@ -56,24 +56,13 @@ def preparar_dados(df):
     df = df.dropna()
     print(f"Removidas {antes - len(df)} linhas com valores nulos.")
 
-    # ============================================================
-    # Codificação à prova de balas:
-    # 1. Converte TUDO para string (mesmo que já seja numérico)
-    # 2. Aplica LabelEncoder em cada coluna
-    # 3. Reatribui como int para garantir compatibilidade com sklearn
-    # ============================================================
+    # Codificação: tudo vira string, aplica LabelEncoder, força int
     encoders = {}
     for col in FEATURES:
-        # Converte para string primeiro (resolve category, object, int, etc)
         serie_str = df[col].astype(str)
-
-        # Aplica o encoder
         le = LabelEncoder()
         df[col] = le.fit_transform(serie_str)
-
-        # Garante que ficou como inteiro (não como objeto)
         df[col] = df[col].astype(int)
-
         encoders[col] = le
         print(f"  {col}: codificada ({len(le.classes_)} valores únicos)")
 
@@ -105,7 +94,6 @@ def treinar_modelo(df):
     X = df[FEATURES].copy()
     y = df[TARGET].copy()
 
-    # Garantia extra: força tudo a float (sklearn adora float)
     X = X.astype(float)
     y = y.astype(int)
 
@@ -170,7 +158,8 @@ def plotar_importancia_features(modelo):
     }).sort_values("importancia", ascending=True)
 
     plt.figure(figsize=(10, 6))
-    sns.barplot(data=importancias, x="importancia", y="feature", palette="viridis")
+    sns.barplot(data=importancias, x="importancia", y="feature", palette="viridis",
+                hue="feature", legend=False)
     plt.title("Importância das Features - Random Forest")
     plt.xlabel("Importância")
     plt.ylabel("")
@@ -195,9 +184,11 @@ if __name__ == "__main__":
     df = carregar_dados()
     df_prep, encoders = preparar_dados(df)
     modelo, X_test, y_test, y_pred = treinar_modelo(df_prep)
+
+    # ORDEM CORRIGIDA: salvar primeiro, plotar depois
+    salvar_modelo(modelo, encoders)
     plotar_matriz_confusao(y_test, y_pred, encoders)
     plotar_importancia_features(modelo)
-    salvar_modelo(modelo, encoders)
 
     print("\n" + "="*60)
     print("MACHINE LEARNING CONCLUÍDO!")
