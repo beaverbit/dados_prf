@@ -6,7 +6,7 @@ Pipeline completo de Ciência de Dados aplicado aos dados abertos de acidentes d
 
 ---
 
-## 📊 Visão Geral
+## Visão Geral
 
 - **Fonte dos dados:** [PRF — Dados Abertos](https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos/dados-abertos-da-prf)
 - **Período analisado:** 2021 a 2026
