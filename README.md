@@ -20,12 +20,12 @@ Pipeline completo de Ciência de Dados aplicado aos dados abertos de acidentes d
 ## Arquitetura do Projeto
 
 ```
-tcc_acidentes_prf/
+tcc_utfpr/
 │
 ├── dados_brutos/              # CSVs originais da PRF (não versionados)
 ├── dados_tratados/            # Dados limpos e resultados (não versionados)
 ├── imagens/                   # Gráficos gerados (versionados)
-├── modelo/                    # Modelo ML treinado (versionado)
+├── modelo/                    # Modelo ML treinado (não versionado — gerado pelo script 06)
 │
 ├── 01_extracao.py             # Leitura e consolidação dos CSVs brutos
 ├── 02_limpeza.py              # Limpeza e padronização dos dados
@@ -36,6 +36,7 @@ tcc_acidentes_prf/
 │
 ├── requirements.txt           # Dependências do projeto
 ├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
@@ -63,7 +64,15 @@ git clone https://github.com/beaverbit/tcc_utfpr.git
 cd tcc_utfpr
 ```
 
-### 2. Crie o ambiente virtual
+### 2. Crie as pastas necessárias
+
+O Git não versiona as pastas que estão no `.gitignore`. Crie-as manualmente:
+
+```bash
+mkdir -p dados_brutos dados_tratados modelo
+```
+
+### 3. Crie o ambiente virtual
 
 ```bash
 python3 -m venv venv
@@ -72,26 +81,31 @@ source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 ```
 
-### 3. Instale as dependências
+### 4. Instale as dependências
 
 ```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4. Baixe os dados brutos
+### 5. Baixe os dados brutos
 
 Acesse [Dados Abertos da PRF](https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos/dados-abertos-da-prf) e baixe os arquivos de **Acidentes** dos anos 2021 a 2026. Salve todos em `dados_brutos/`.
 
-### 5. Execute o pipeline na ordem
+> ⚠️ **Nota:** o modelo treinado (`modelo/modelo_rf.pkl`) **não está versionado** por exceder o limite de 100 MB do GitHub. Ele será gerado automaticamente no passo 6.
+
+### 6. Execute o pipeline na ordem
 
 ```bash
 python3 01_extracao.py         # Consolida os CSVs brutos
 python3 02_limpeza.py          # Limpa e padroniza
 python3 03_analise.py          # Gera as análises
 python3 04_visualizacao.py     # Gera os 8 gráficos
-python3 06_machine_learning.py # Treina o modelo
+python3 06_machine_learning.py # Treina o modelo (gera modelo/*.pkl)
 streamlit run 05_dashboard.py  # Abre o dashboard
 ```
+
+Acesse `http://localhost:8501` no navegador para ver o dashboard.
 
 ---
 
