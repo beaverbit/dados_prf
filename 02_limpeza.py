@@ -9,7 +9,7 @@ import os
 ARQ_ENTRADA = os.path.join("dados_tratados", "dados_consolidados_brutos.csv")
 ARQ_SAIDA = os.path.join("dados_tratados", "acidentes_limpos.csv")
 
-# Colunas que vamos MANTER (o resto é descartado)
+# Colunas que vou MANTER (o resto é descartado)
 COLUNAS_UTEIS = [
     # Tempo
     "data_inversa", "horario", "dia_semana",
