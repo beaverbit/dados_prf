@@ -9,7 +9,7 @@ ARQ_ENTRADA = os.path.join("dados_tratados", "acidentes_limpos.csv")
 
 # CONFIGURAÇÃO DO RECORTE
 # Mude para None se quiser Brasil todo, ou "PR" para só Paraná
-UF_FOCO = "PR"  # <-- RECOMENDO MANTER "PR" PARA O TCC
+UF_FOCO = "PR"  # <-- MANTER "PR" PARA O TCC
 
 def carregar_dados():
     print("Carregando dados limpos...")
