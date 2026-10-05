@@ -22,7 +22,7 @@ PASTA_MODELO = "modelo"
 PASTA_IMAGENS = "imagens"
 UF_FOCO = "PR"
 
-# Features que vamos usar para prever a gravidade
+# Features que vou usar para prever a gravidade
 FEATURES = [
     "hora", "mes", "dia_semana", "fase_dia",
     "condicao_metereologica", "tipo_pista", "tracado_via",
