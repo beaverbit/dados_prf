@@ -60,7 +60,7 @@ tcc_acidentes_prf/
 
 ```bash
 git clone https://github.com/beaverbit/tcc_utfpr.git
-cd tcc_acidentes_prf
+cd tcc_utfpr
 ```
 
 ### 2. Crie o ambiente virtual
