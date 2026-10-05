@@ -1,0 +1,38 @@
+# Ambiente virtual
+venv/
+env/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Dados (grandes demais para o GitHub)
+dados_brutos/
+dados_tratados/*.csv
+*.csv
+!requirements.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Modelo treinado (grande demais para o GitHub)
+modelo/
