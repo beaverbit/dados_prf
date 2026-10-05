@@ -1,4 +1,4 @@
-# 🚗 Análise de Acidentes nas Rodovias Federais do Paraná
+# Análise de Acidentes nas Rodovias Federais do Paraná
 
 Trabalho de Conclusão de Curso (TCC) do curso de **Tecnologia em Sistemas para Internet** da **UTFPR — Campus Toledo**.
 
@@ -95,7 +95,7 @@ streamlit run 05_dashboard.py  # Abre o dashboard
 
 ---
 
-## 📈 Principais Resultados
+## Principais Resultados
 
 ### Análise Exploratória
 
@@ -136,7 +136,7 @@ O modelo demonstrou ser sensível aos fatores de risco conhecidos na literatura 
 
 ---
 
-## 📚 Referências
+## Referências
 
 - BRASIL. Polícia Rodoviária Federal. **Dados Abertos da PRF**. Disponível em: https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos
 - PEDREGOSA, F. et al. **Scikit-learn: Machine Learning in Python**. JMLR, 2011.
@@ -144,7 +144,7 @@ O modelo demonstrou ser sensível aos fatores de risco conhecidos na literatura 
 
 ---
 
-## 👤 Autor
+## Autor
 
 **Jhonatan Lucas Santos**
 - Curso de Tecnologia em Sistemas para Internet — UTFPR Campus Toledo
