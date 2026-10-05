@@ -17,7 +17,7 @@ Pipeline completo de Ciência de Dados aplicado aos dados abertos de acidentes d
 
 ---
 
-## 🏗️ Arquitetura do Projeto
+## Arquitetura do Projeto
 
 ```
 tcc_acidentes_prf/
@@ -41,7 +41,7 @@ tcc_acidentes_prf/
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 | Categoria | Tecnologias |
 | :--- | :--- |
@@ -54,7 +54,7 @@ tcc_acidentes_prf/
 
 ---
 
-## 🚀 Como Executar
+## Como Executar
 
 ### 1. Clone o repositório
 
@@ -124,7 +124,7 @@ O modelo demonstrou ser sensível aos fatores de risco conhecidos na literatura 
 
 ---
 
-## 🖼️ Screenshots
+## Screenshots
 
 ### Dashboard Analítico
 
@@ -147,10 +147,10 @@ O modelo demonstrou ser sensível aos fatores de risco conhecidos na literatura 
 ## 👤 Autor
 
 **Jhonatan Lucas Santos**
-Curso de Tecnologia em Sistemas para Internet — UTFPR Campus Toledo
+- Curso de Tecnologia em Sistemas para Internet — UTFPR Campus Toledo
 
 ---
 
-## 📄 Licença
+## Licença
 
 Este projeto é de uso acadêmico. Os dados são de domínio público (PRF).
