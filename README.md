@@ -59,7 +59,7 @@ tcc_acidentes_prf/
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/tcc_acidentes_prf.git
+git clone https://github.com/beaverbit/tcc_utfpr.git
 cd tcc_acidentes_prf
 ```
 
