@@ -7,12 +7,9 @@ import os
 
 ARQ_ENTRADA = os.path.join("dados_tratados", "acidentes_limpos.csv")
 
-# ============================================================
 # CONFIGURAÇÃO DO RECORTE
 # Mude para None se quiser Brasil todo, ou "PR" para só Paraná
-# ============================================================
 UF_FOCO = "PR"  # <-- RECOMENDO MANTER "PR" PARA O TCC
-
 
 def carregar_dados():
     print("Carregando dados limpos...")
@@ -31,7 +28,6 @@ def carregar_dados():
 
     return df
 
-
 def analise_por_ano(df):
     print("\n" + "="*60)
     print("ANÁLISE 1: Acidentes por ano")
@@ -46,7 +42,6 @@ def analise_por_ano(df):
     print(resumo.to_string(index=False))
     return resumo
 
-
 def analise_por_mes(df):
     print("\n" + "="*60)
     print("ANÁLISE 2: Acidentes por mês")
@@ -58,7 +53,6 @@ def analise_por_mes(df):
     resumo["taxa_fatalidade_%"] = (resumo["mortos"] / resumo["total"] * 100).round(2)
     print(resumo.to_string(index=False))
     return resumo
-
 
 def analise_por_dia_semana(df):
     print("\n" + "="*60)
@@ -76,7 +70,6 @@ def analise_por_dia_semana(df):
     print(resumo.to_string(index=False))
     return resumo
 
-
 def analise_por_hora(df):
     print("\n" + "="*60)
     print("ANÁLISE 4: Acidentes por hora do dia")
@@ -88,7 +81,6 @@ def analise_por_hora(df):
     resumo["taxa_fatalidade_%"] = (resumo["mortos"] / resumo["total"] * 100).round(2)
     print(resumo.to_string(index=False))
     return resumo
-
 
 def analise_por_condicao_meteorologica(df):
     print("\n" + "="*60)
@@ -103,7 +95,6 @@ def analise_por_condicao_meteorologica(df):
     print(resumo.to_string(index=False))
     return resumo
 
-
 def analise_por_tipo_pista(df):
     print("\n" + "="*60)
     print("ANÁLISE 6: Acidentes por tipo de pista")
@@ -116,7 +107,6 @@ def analise_por_tipo_pista(df):
     resumo = resumo.sort_values("total", ascending=False)
     print(resumo.to_string(index=False))
     return resumo
-
 
 def analise_top_causas(df):
     print("\n" + "="*60)
@@ -131,7 +121,6 @@ def analise_top_causas(df):
     print(resumo.to_string(index=False))
     return resumo
 
-
 def analise_por_tipo_acidente(df):
     print("\n" + "="*60)
     print("ANÁLISE 8: Top 10 tipos de acidente")
@@ -144,7 +133,6 @@ def analise_por_tipo_acidente(df):
     resumo = resumo.sort_values("total", ascending=False).head(10)
     print(resumo.to_string(index=False))
     return resumo
-
 
 def analise_por_fase_dia(df):
     print("\n" + "="*60)
@@ -159,7 +147,6 @@ def analise_por_fase_dia(df):
     print(resumo.to_string(index=False))
     return resumo
 
-
 def analise_por_gravidade(df):
     print("\n" + "="*60)
     print("ANÁLISE 10: Distribuição de gravidade")
@@ -169,7 +156,6 @@ def analise_por_gravidade(df):
     resumo["percentual_%"] = (resumo["total"] / resumo["total"].sum() * 100).round(2)
     print(resumo.to_string(index=False))
     return resumo
-
 
 def salvar_resultados(resultados):
     """Salva todas as tabelas em um único CSV para o TCC."""
@@ -183,7 +169,6 @@ def salvar_resultados(resultados):
             f.write("\n")
 
     print(f"\nResultados salvos em: {caminho}")
-
 
 if __name__ == "__main__":
     df = carregar_dados()

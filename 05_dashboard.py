@@ -10,9 +10,7 @@ import plotly.graph_objects as go
 import os
 import joblib
 
-# ============================================================
 # CONFIGURAÇÃO DA PÁGINA
-# ============================================================
 st.set_page_config(
     page_title="Acidentes PRF - Paraná",
     page_icon="🚗",
@@ -20,9 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ============================================================
 # CONSTANTES
-# ============================================================
 ARQ_DADOS = os.path.join("dados_tratados", "acidentes_limpos.csv")
 ARQ_MODELO = os.path.join("modelo", "modelo_rf.pkl")
 ARQ_ENCODERS = os.path.join("modelo", "encoders.pkl")
@@ -34,9 +30,7 @@ FEATURES = [
 ]
 TARGET = "gravidade"
 
-# ============================================================
 # CARREGAMENTO DOS DADOS (com cache)
-# ============================================================
 @st.cache_data
 def carregar_dados():
     df = pd.read_csv(
@@ -49,10 +43,7 @@ def carregar_dados():
     df = df[df["uf"] == "PR"].copy()
     return df
 
-
-# ============================================================
 # CARREGAMENTO DO MODELO E ENCODERS (com cache)
-# ============================================================
 @st.cache_resource
 def carregar_modelo():
     if not os.path.exists(ARQ_MODELO) or not os.path.exists(ARQ_ENCODERS):
@@ -61,13 +52,10 @@ def carregar_modelo():
     encoders = joblib.load(ARQ_ENCODERS)
     return modelo, encoders
 
-
 df = carregar_dados()
 modelo, encoders = carregar_modelo()
 
-# ============================================================
 # CABEÇALHO
-# ============================================================
 st.title("🚗 Análise de Acidentes nas Rodovias Federais do Paraná")
 st.markdown(
     """
@@ -79,9 +67,7 @@ st.markdown(
 
 st.divider()
 
-# ============================================================
 # SIDEBAR - FILTROS
-# ============================================================
 st.sidebar.header("🔍 Filtros")
 
 # Filtro por ano
@@ -117,9 +103,7 @@ df_filtrado = df[
 
 st.sidebar.markdown(f"**Registros filtrados:** {len(df_filtrado):,}")
 
-# ============================================================
 # KPIs PRINCIPAIS
-# ============================================================
 col1, col2, col3, col4 = st.columns(4)
 
 total_acidentes = len(df_filtrado)
@@ -134,9 +118,7 @@ col4.metric("Taxa de Fatalidade", f"{taxa_fatalidade:.2f}%")
 
 st.divider()
 
-# ============================================================
 # GRÁFICO 1: Acidentes e mortos por ano
-# ============================================================
 st.subheader("📅 Acidentes e mortos por ano")
 
 resumo_ano = df_filtrado.groupby("ano").agg(
@@ -170,9 +152,7 @@ fig1.update_layout(
 )
 st.plotly_chart(fig1, width="stretch")
 
-# ============================================================
 # GRÁFICO 2 e 3: Por mês e por dia da semana
-# ============================================================
 col_a, col_b = st.columns(2)
 
 with col_a:
@@ -201,9 +181,7 @@ with col_b:
     fig3.update_layout(height=350, showlegend=False, coloraxis_showscale=False)
     st.plotly_chart(fig3, width="stretch")
 
-# ============================================================
 # GRÁFICO 4: Acidentes e taxa de fatalidade por hora
-# ============================================================
 st.subheader("🕐 Acidentes e taxa de fatalidade por hora do dia")
 
 resumo_hora = df_filtrado.groupby("hora").agg(
@@ -238,9 +216,7 @@ fig4.update_layout(
 )
 st.plotly_chart(fig4, width="stretch")
 
-# ============================================================
 # GRÁFICO 5 e 6: Tipo de pista e fase do dia
-# ============================================================
 col_c, col_d = st.columns(2)
 
 with col_c:
@@ -271,9 +247,7 @@ with col_d:
     fig6.update_layout(height=350)
     st.plotly_chart(fig6, width="stretch")
 
-# ============================================================
 # GRÁFICO 7: Top 10 causas
-# ============================================================
 st.subheader("⚠️ Top 10 causas de acidentes")
 
 resumo_causas = df_filtrado.groupby("causa_acidente").agg(
@@ -294,9 +268,7 @@ fig7.update_traces(texttemplate="%{text:,}", textposition="outside")
 fig7.update_layout(height=500, coloraxis_colorbar=dict(title="Taxa fatal. (%)"))
 st.plotly_chart(fig7, width="stretch")
 
-# ============================================================
 # GRÁFICO 8: Top 10 tipos de acidente
-# ============================================================
 st.subheader("💥 Top 10 tipos de acidente")
 
 resumo_tipos = df_filtrado.groupby("tipo_acidente").agg(
@@ -317,9 +289,7 @@ fig8.update_traces(texttemplate="%{text:,}", textposition="outside")
 fig8.update_layout(height=500, coloraxis_colorbar=dict(title="Taxa fatal. (%)"))
 st.plotly_chart(fig8, width="stretch")
 
-# ============================================================
 # SEÇÃO DE MACHINE LEARNING - PREVISÃO DE GRAVIDADE
-# ============================================================
 st.divider()
 st.header("🔮 Previsão de Gravidade com Machine Learning")
 st.markdown(
@@ -501,9 +471,7 @@ else:
         except Exception as e:
             st.error(f"Erro ao fazer a previsão: {e}")
 
-# ============================================================
 # RODAPÉ
-# ============================================================
 st.divider()
 st.caption(
     "Dashboard desenvolvido para Trabalho de Conclusão de Curso (TCC) — "

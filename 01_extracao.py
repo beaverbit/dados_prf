@@ -50,7 +50,6 @@ def carregar_dados_brutos():
 
     return df_consolidado
 
-
 if __name__ == "__main__":
     df = carregar_dados_brutos()
 

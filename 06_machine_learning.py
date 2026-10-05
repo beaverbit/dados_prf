@@ -16,9 +16,7 @@ from sklearn.metrics import (
 )
 import joblib
 
-# ============================================================
 # CONFIGURAÇÃO
-# ============================================================
 ARQ_ENTRADA = os.path.join("dados_tratados", "acidentes_limpos.csv")
 PASTA_MODELO = "modelo"
 PASTA_IMAGENS = "imagens"
@@ -34,7 +32,6 @@ FEATURES = [
 # Variável alvo
 TARGET = "gravidade"
 
-
 def carregar_dados():
     print("Carregando dados...")
     df = pd.read_csv(
@@ -45,7 +42,6 @@ def carregar_dados():
         df = df[df["uf"] == UF_FOCO].copy()
         print(f"Filtrado para UF={UF_FOCO}: {len(df)} linhas")
     return df
-
 
 def preparar_dados(df):
     """Seleciona features, remove nulos e codifica variáveis categóricas."""
@@ -100,7 +96,6 @@ def preparar_dados(df):
 
     return df, encoders
 
-
 def treinar_modelo(df):
     """Treina o Random Forest e avalia."""
     print("\n" + "="*60)
@@ -147,7 +142,6 @@ def treinar_modelo(df):
 
     return modelo, X_test, y_test, y_pred
 
-
 def plotar_matriz_confusao(y_test, y_pred, encoders):
     print("\nGerando matriz de confusão...")
     cm = confusion_matrix(y_test, y_pred)
@@ -167,7 +161,6 @@ def plotar_matriz_confusao(y_test, y_pred, encoders):
     plt.savefig(caminho, dpi=150, bbox_inches="tight")
     plt.close()
     print(f"  -> Salvo: {caminho}")
-
 
 def plotar_importancia_features(modelo):
     print("\nGerando gráfico de importância das features...")
@@ -190,7 +183,6 @@ def plotar_importancia_features(modelo):
     print("\nTop 5 features mais importantes:")
     print(importancias.tail(5).to_string(index=False))
 
-
 def salvar_modelo(modelo, encoders):
     print("\nSalvando modelo e encoders...")
     os.makedirs(PASTA_MODELO, exist_ok=True)
@@ -198,7 +190,6 @@ def salvar_modelo(modelo, encoders):
     joblib.dump(encoders, os.path.join(PASTA_MODELO, "encoders.pkl"))
     print(f"  -> Modelo salvo em: {PASTA_MODELO}/modelo_rf.pkl")
     print(f"  -> Encoders salvos em: {PASTA_MODELO}/encoders.pkl")
-
 
 if __name__ == "__main__":
     df = carregar_dados()

@@ -25,7 +25,6 @@ COLUNAS_UTEIS = [
     "tipo_veiculo", "idade", "sexo", "estado_fisico", "tipo_envolvido",
 ]
 
-
 def limpar_dados():
     print("Carregando dados brutos consolidados...")
     # Lê em chunks para não estourar a RAM (1,2 GB é bastante)
@@ -111,7 +110,6 @@ def limpar_dados():
     print(df["uf"].value_counts().head())
 
     return df
-
 
 if __name__ == "__main__":
     df = limpar_dados()

@@ -17,7 +17,6 @@ PASTA_IMAGENS = "imagens"
 
 UF_FOCO = "PR"  # mude para None se quiser Brasil todo
 
-
 def carregar_dados():
     print("Carregando dados limpos...")
     df = pd.read_csv(
@@ -32,7 +31,6 @@ def carregar_dados():
         print(f"Filtrado para UF={UF_FOCO}: {len(df)} linhas")
     return df
 
-
 def salvar(nome):
     os.makedirs(PASTA_IMAGENS, exist_ok=True)
     caminho = os.path.join(PASTA_IMAGENS, nome)
@@ -41,10 +39,7 @@ def salvar(nome):
     plt.close()
     print(f"  -> Salvo: {caminho}")
 
-
-# ============================================================
 # GRÁFICO 1: Acidentes e mortos por ano
-# ============================================================
 def grafico_por_ano(df):
     print("\nGerando gráfico 1: Acidentes por ano...")
     resumo = df.groupby("ano").agg(
@@ -68,10 +63,7 @@ def grafico_por_ano(df):
     fig.legend(loc="upper left", bbox_to_anchor=(0.1, 0.9))
     salvar("01_acidentes_por_ano.png")
 
-
-# ============================================================
 # GRÁFICO 2: Acidentes por mês
-# ============================================================
 def grafico_por_mes(df):
     print("\nGerando gráfico 2: Acidentes por mês...")
     resumo = df.groupby("mes").agg(total=("gravidade", "count")).reset_index()
@@ -83,10 +75,7 @@ def grafico_por_mes(df):
     plt.ylabel("Total de acidentes")
     salvar("02_acidentes_por_mes.png")
 
-
-# ============================================================
 # GRÁFICO 3: Acidentes por dia da semana
-# ============================================================
 def grafico_por_dia_semana(df):
     print("\nGerando gráfico 3: Acidentes por dia da semana...")
     ordem = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira",
@@ -103,10 +92,7 @@ def grafico_por_dia_semana(df):
     plt.xticks(rotation=30)
     salvar("03_acidentes_por_dia_semana.png")
 
-
-# ============================================================
 # GRÁFICO 4: Acidentes e taxa de fatalidade por hora
-# ============================================================
 def grafico_por_hora(df):
     print("\nGerando gráfico 4: Acidentes por hora...")
     resumo = df.groupby("hora").agg(
@@ -131,10 +117,7 @@ def grafico_por_hora(df):
     fig.legend(loc="upper left", bbox_to_anchor=(0.1, 0.9))
     salvar("04_acidentes_por_hora.png")
 
-
-# ============================================================
 # GRÁFICO 5: Acidentes por condição meteorológica
-# ============================================================
 def grafico_condicao_meteorologica(df):
     print("\nGerando gráfico 5: Condição meteorológica...")
     resumo = df.groupby("condicao_metereologica").agg(
@@ -148,10 +131,7 @@ def grafico_condicao_meteorologica(df):
     plt.ylabel("Condição meteorológica")
     salvar("05_condicao_meteorologica.png")
 
-
-# ============================================================
 # GRÁFICO 6: Taxa de fatalidade por tipo de pista
-# ============================================================
 def grafico_tipo_pista(df):
     print("\nGerando gráfico 6: Tipo de pista...")
     resumo = df.groupby("tipo_pista").agg(
@@ -174,10 +154,7 @@ def grafico_tipo_pista(df):
     plt.title(f"Acidentes e taxa de fatalidade por tipo de pista — UF: {UF_FOCO}")
     salvar("06_tipo_pista.png")
 
-
-# ============================================================
 # GRÁFICO 7: Top 10 causas de acidentes
-# ============================================================
 def grafico_top_causas(df):
     print("\nGerando gráfico 7: Top 10 causas...")
     resumo = df.groupby("causa_acidente").agg(
@@ -191,10 +168,7 @@ def grafico_top_causas(df):
     plt.ylabel("")
     salvar("07_top_causas.png")
 
-
-# ============================================================
 # GRÁFICO 8: Distribuição de gravidade
-# ============================================================
 def grafico_gravidade(df):
     print("\nGerando gráfico 8: Distribuição de gravidade...")
     resumo = df["gravidade"].value_counts().reset_index()
@@ -209,7 +183,6 @@ def grafico_gravidade(df):
             colors=cores_lista, startangle=90, textprops={"fontsize": 12})
     plt.title(f"Distribuição de gravidade dos acidentes — UF: {UF_FOCO}")
     salvar("08_gravidade.png")
-
 
 if __name__ == "__main__":
     df = carregar_dados()
