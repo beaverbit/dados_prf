@@ -139,18 +139,30 @@ Acesse `http://localhost:8501` no navegador para ver o dashboard.
 O modelo demonstrou ser sensível aos fatores de risco conhecidos na literatura de segurança viária.
 
 ---
+## Visualizações
 
-## Screenshots
+### Distribuição Anual de Acidentes e Óbitos
 
-### Dashboard Analítico
+![Acidentes por ano](imagens/01_acidentes_por_ano.png)
 
-![Dashboard](imagens/dashboard_principal.png)
+### Distribuição Horária e Taxa de Fatalidade
 
-### Previsão com Machine Learning
+![Acidentes por hora](imagens/04_acidentes_por_hora.png)
 
-![Previsão](imagens/dashboard_previsao.png)
+### Principais Causas de Acidentes
+
+![Principais causas](imagens/07_principais_causas.png)
+
+### Distribuição de Gravidade
+
+![Distribuição de gravidade](imagens/08_gravidade.png)
+
+### Importância das Features — Random Forest
+
+![Importância das features](imagens/10_importancia_features.png)
 
 ---
+
 ## Metodologia
 
 A análise segue as etapas clássicas de um pipeline de Ciência de Dados:
