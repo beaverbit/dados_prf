@@ -123,8 +123,8 @@ Acesse `http://localhost:8501` no navegador para ver o dashboard.
 
 ### Machine Learning (Random Forest)
 
-- **Acurácia global:** 45,67%
-- **F1-Score (weighted):** 0,4764
+- **Acurácia global:** 45,57%
+- **F1-Score (weighted):** 0,4760
 - **Recall para classe "Fatal":** 67% (o modelo identifica 2 em cada 3 acidentes fatais)
 - **Top 5 features mais importantes:** traçado da via, hora, tipo de acidente, mês, dia da semana
 
