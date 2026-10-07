@@ -25,7 +25,7 @@ Pipeline completo de Ciência de Dados aplicado aos dados abertos de acidentes d
 dados_prf/
 │
 ├── dados_brutos/              # CSVs originais da PRF (não versionados)
-├── dados_tratados/            # Dados limpos e resultados (não versionados)
+├── dados_tratados/            # Dados limpos e resultados intermediários (não versionados)
 ├── imagens/                   # Gráficos gerados (versionados)
 ├── modelo/                    # Modelo ML treinado (não versionado — gerado pelo script 06)
 │
