@@ -13,7 +13,7 @@ import joblib
 # CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
     page_title="Acidentes PRF - Paraná",
-    page_icon="🚗",
+    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -56,7 +56,7 @@ df = carregar_dados()
 modelo, encoders = carregar_modelo()
 
 # CABEÇALHO
-st.title("🚗 Análise de Acidentes nas Rodovias Federais do Paraná")
+st.title("Análise de Acidentes nas Rodovias Federais do Paraná")
 st.markdown(
     """
     **Fonte:** Polícia Rodoviária Federal (PRF) — Dados Abertos  
@@ -68,9 +68,8 @@ st.markdown(
 st.divider()
 
 # SIDEBAR - FILTROS
-st.sidebar.header("🔍 Filtros")
+st.sidebar.header("Filtros")
 
-# Filtro por ano
 anos_disponiveis = sorted(df["ano"].dropna().unique().tolist())
 anos_selecionados = st.sidebar.multiselect(
     "Ano",
@@ -78,7 +77,6 @@ anos_selecionados = st.sidebar.multiselect(
     default=anos_disponiveis,
 )
 
-# Filtro por gravidade
 gravidades_disponiveis = df["gravidade"].unique().tolist()
 gravidades_selecionadas = st.sidebar.multiselect(
     "Gravidade",
@@ -86,7 +84,6 @@ gravidades_selecionadas = st.sidebar.multiselect(
     default=gravidades_disponiveis,
 )
 
-# Filtro por condição meteorológica
 condicoes = df["condicao_metereologica"].dropna().unique().tolist()
 condicoes_selecionadas = st.sidebar.multiselect(
     "Condição meteorológica",
@@ -94,7 +91,6 @@ condicoes_selecionadas = st.sidebar.multiselect(
     default=condicoes,
 )
 
-# Aplica os filtros
 df_filtrado = df[
     (df["ano"].isin(anos_selecionados))
     & (df["gravidade"].isin(gravidades_selecionadas))
@@ -119,7 +115,7 @@ col4.metric("Taxa de Fatalidade", f"{taxa_fatalidade:.2f}%")
 st.divider()
 
 # GRÁFICO 1: Acidentes e mortos por ano
-st.subheader("📅 Acidentes e mortos por ano")
+st.subheader("Distribuição Anual de Acidentes e Óbitos")
 
 resumo_ano = df_filtrado.groupby("ano").agg(
     total=("gravidade", "count"),
@@ -156,7 +152,7 @@ st.plotly_chart(fig1, width="stretch")
 col_a, col_b = st.columns(2)
 
 with col_a:
-    st.subheader("📆 Acidentes por mês")
+    st.subheader("Distribuição Mensal de Acidentes")
     resumo_mes = df_filtrado.groupby("mes").agg(total=("gravidade", "count")).reset_index()
     fig2 = px.bar(
         resumo_mes, x="mes", y="total",
@@ -167,7 +163,7 @@ with col_a:
     st.plotly_chart(fig2, width="stretch")
 
 with col_b:
-    st.subheader("📅 Acidentes por dia da semana")
+    st.subheader("Distribuição por Dia da Semana")
     ordem = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira",
              "sexta-feira", "sábado", "domingo"]
     resumo_dia = df_filtrado.groupby("dia_semana").agg(total=("gravidade", "count")).reset_index()
@@ -182,7 +178,7 @@ with col_b:
     st.plotly_chart(fig3, width="stretch")
 
 # GRÁFICO 4: Acidentes e taxa de fatalidade por hora
-st.subheader("🕐 Acidentes e taxa de fatalidade por hora do dia")
+st.subheader("Distribuição Horária e Taxa de Fatalidade")
 
 resumo_hora = df_filtrado.groupby("hora").agg(
     total=("gravidade", "count"),
@@ -220,7 +216,7 @@ st.plotly_chart(fig4, width="stretch")
 col_c, col_d = st.columns(2)
 
 with col_c:
-    st.subheader("🛣️ Taxa de fatalidade por tipo de pista")
+    st.subheader("Taxa de Fatalidade por Tipo de Pista")
     resumo_pista = df_filtrado.groupby("tipo_pista").agg(
         total=("gravidade", "count"),
         mortos=("mortos", "sum"),
@@ -237,7 +233,7 @@ with col_c:
     st.plotly_chart(fig5, width="stretch")
 
 with col_d:
-    st.subheader("🌗 Acidentes por fase do dia")
+    st.subheader("Distribuição por Fase do Dia")
     resumo_fase = df_filtrado.groupby("fase_dia").agg(total=("gravidade", "count")).reset_index()
     fig6 = px.pie(
         resumo_fase, names="fase_dia", values="total",
@@ -247,8 +243,8 @@ with col_d:
     fig6.update_layout(height=350)
     st.plotly_chart(fig6, width="stretch")
 
-# GRÁFICO 7: Top 10 causas
-st.subheader("⚠️ Top 10 causas de acidentes")
+# GRÁFICO 7: Causas de acidente
+st.subheader("Principais Causas de Acidentes")
 
 resumo_causas = df_filtrado.groupby("causa_acidente").agg(
     total=("gravidade", "count"),
@@ -268,8 +264,8 @@ fig7.update_traces(texttemplate="%{text:,}", textposition="outside")
 fig7.update_layout(height=500, coloraxis_colorbar=dict(title="Taxa fatal. (%)"))
 st.plotly_chart(fig7, width="stretch")
 
-# GRÁFICO 8: Top 10 tipos de acidente
-st.subheader("💥 Top 10 tipos de acidente")
+# GRÁFICO 8: Tipos de acidente
+st.subheader("Principais Tipos de Acidente")
 
 resumo_tipos = df_filtrado.groupby("tipo_acidente").agg(
     total=("gravidade", "count"),
@@ -291,7 +287,7 @@ st.plotly_chart(fig8, width="stretch")
 
 # SEÇÃO DE MACHINE LEARNING - PREVISÃO DE GRAVIDADE
 st.divider()
-st.header("🔮 Previsão de Gravidade com Machine Learning")
+st.header("Previsão de Gravidade com Machine Learning")
 st.markdown(
     """
     Utilize o formulário abaixo para simular as condições de um acidente.
@@ -302,7 +298,7 @@ st.markdown(
 
 if modelo is None or encoders is None:
     st.warning(
-        "⚠️ Modelo não encontrado. Rode `python3 06_machine_learning.py` "
+        "Modelo não encontrado. Rode `python3 06_machine_learning.py` "
         "para gerar os arquivos `modelo/modelo_rf.pkl` e `modelo/encoders.pkl`."
     )
 else:
@@ -354,11 +350,10 @@ else:
                 options=df["tipo_acidente"].dropna().unique().tolist(),
             )
 
-        submit = st.form_submit_button("🔮 Prever Gravidade", use_container_width=True)
+        submit = st.form_submit_button("Prever Gravidade", use_container_width=True)
 
     if submit:
         try:
-            # Monta o dicionário de entrada
             entrada = {
                 "hora": hora_input,
                 "mes": mes_input,
@@ -372,54 +367,37 @@ else:
                 "tipo_acidente": tipo_acidente_input,
             }
 
-            # Aplica os encoders (label encoding) em cada feature
             linha_codificada = {}
             for feat in FEATURES:
                 valor = str(entrada[feat])
                 le = encoders[feat]
-                # Se o valor não está no encoder, usa o mais próximo (0) e avisa
                 if valor in le.classes_:
                     linha_codificada[feat] = int(le.transform([valor])[0])
                 else:
-                    # Fallback: usa a primeira classe (evita crash)
                     linha_codificada[feat] = 0
                     st.warning(
                         f"Valor '{valor}' não visto no treino para '{feat}'. "
                         f"Usando valor padrão."
                     )
 
-            # Cria o DataFrame no formato que o modelo espera
             X_input = pd.DataFrame([linha_codificada])[FEATURES].astype(float)
 
-            # Faz a previsão
             pred = modelo.predict(X_input)[0]
             proba = modelo.predict_proba(X_input)[0]
 
-            # Decodifica a classe prevista
             le_target = encoders[TARGET]
             classe_prevista = le_target.inverse_transform([pred])[0]
 
-            # ============================================================
-            # EXIBE O RESULTADO
-            # ============================================================
-            st.markdown("### 📊 Resultado da Previsão")
+            st.markdown("### Resultado da Previsão")
 
-            # Cor e emoji por classe
             cores = {
                 "Fatal": "#c0392b",
                 "Grave": "#e67e22",
                 "Leve": "#f1c40f",
                 "Sem Vítimas": "#2ecc71",
             }
-            emojis = {
-                "Fatal": "💀",
-                "Grave": "🚨",
-                "Leve": "⚠️",
-                "Sem Vítimas": "✅",
-            }
 
             cor = cores.get(classe_prevista, "#888")
-            emoji = emojis.get(classe_prevista, "")
 
             st.markdown(
                 f"""
@@ -431,15 +409,14 @@ else:
                     margin: 10px 0;
                 ">
                     <h2 style="color: {cor}; margin: 0;">
-                        {emoji} Gravidade prevista: {classe_prevista}
+                        Gravidade prevista: {classe_prevista}
                     </h2>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
-            # Exibe as probabilidades em barras
-            st.markdown("#### Probabilidades por classe:")
+            st.markdown("#### Probabilidade por Classe")
             classes_originais = list(le_target.classes_)
             df_proba = pd.DataFrame({
                 "Gravidade": classes_originais,
@@ -464,7 +441,7 @@ else:
             st.plotly_chart(fig_pred, width="stretch")
 
             st.caption(
-                "⚠️ Esta previsão é baseada em padrões estatísticos históricos e "
+                "Esta previsão é baseada em padrões estatísticos históricos e "
                 "não deve ser utilizada como única fonte para decisões de segurança viária."
             )
 
@@ -474,7 +451,5 @@ else:
 # RODAPÉ
 st.divider()
 st.caption(
-    "Dashboard desenvolvido para Trabalho de Conclusão de Curso (TCC) — "
-    "Curso de Tecnologia em Sistemas para Internet — UTFPR Campus Toledo. "
-    "Dados: PRF (2021-2026)."
+    "Dashboard analítico de acidentes rodoviários — dados públicos da PRF (2021-2026)."
 )
