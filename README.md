@@ -186,13 +186,6 @@ disponibilidade e qualidade dos dados no período analisado.
 - **Sazonalidade:** o período de 2021-2026 inclui anos atípicos
   (pandemia e pós-pandemia), o que pode influenciar os padrões observados.
 
-## Trabalhos Futuros
-
-- Incorporar variáveis socioeconômicas (IDH, densidade populacional do trecho)
-- Testar algoritmos de gradient boosting (XGBoost, LightGBM) para comparação
-- Desenvolver modelo de séries temporais para previsão de acidentes
-- Implementar dashboard com dados em tempo real (integração com API da PRF)
-
 ## Referências
 
 - BRASIL. Polícia Rodoviária Federal. **Dados Abertos da PRF**. Disponível em: https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos
