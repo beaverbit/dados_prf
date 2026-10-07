@@ -6,6 +6,8 @@
 import pandas as pd
 import numpy as np
 import os
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
@@ -20,9 +22,11 @@ import joblib
 ARQ_ENTRADA = os.path.join("dados_tratados", "acidentes_limpos.csv")
 PASTA_MODELO = "modelo"
 PASTA_IMAGENS = "imagens"
+
+# Recorte geográfico (None para Brasil, "PR" para Paraná)
 UF_FOCO = "PR"
 
-# Features que vou usar para prever a gravidade
+# Features utilizadas para prever a gravidade
 FEATURES = [
     "hora", "mes", "dia_semana", "fase_dia",
     "condicao_metereologica", "tipo_pista", "tracado_via",
@@ -32,31 +36,36 @@ FEATURES = [
 # Variável alvo
 TARGET = "gravidade"
 
+
 def carregar_dados():
     print("Carregando dados...")
     df = pd.read_csv(
-        ARQ_ENTRADA, sep=";", encoding="utf-8",
-        low_memory=False, parse_dates=["data_inversa"],
+        ARQ_ENTRADA,
+        sep=";",
+        encoding="utf-8",
+        low_memory=False,
+        parse_dates=["data_inversa"],
     )
     if UF_FOCO:
         df = df[df["uf"] == UF_FOCO].copy()
-        print(f"Filtrado para UF={UF_FOCO}: {len(df)} linhas")
+        print(f"Filtrado para UF={UF_FOCO}: {len(df):,} linhas")
     return df
+
 
 def preparar_dados(df):
     """Seleciona features, remove nulos e codifica variáveis categóricas."""
     print("\nPreparando dados para o modelo...")
 
-    # Mantém só as colunas necessárias
+    # Mantém apenas as colunas necessárias
     colunas = FEATURES + [TARGET]
     df = df[colunas].copy()
 
     # Remove linhas com valores nulos nas features
     antes = len(df)
     df = df.dropna()
-    print(f"Removidas {antes - len(df)} linhas com valores nulos.")
+    print(f"Removidas {antes - len(df):,} linhas com valores nulos.")
 
-    # Codificação: tudo vira string, aplica LabelEncoder, força int
+    # Codificação: cada feature categórica vira inteiro via LabelEncoder
     encoders = {}
     for col in FEATURES:
         serie_str = df[col].astype(str)
@@ -66,7 +75,7 @@ def preparar_dados(df):
         encoders[col] = le
         print(f"  {col}: codificada ({len(le.classes_)} valores únicos)")
 
-    # Codifica a variável alvo também
+    # Codifica a variável alvo
     le_target = LabelEncoder()
     df[TARGET] = le_target.fit_transform(df[TARGET].astype(str))
     df[TARGET] = df[TARGET].astype(int)
@@ -79,17 +88,18 @@ def preparar_dados(df):
     if not all(pd.api.types.is_numeric_dtype(X[c]) for c in X.columns):
         raise ValueError("Ainda existem colunas não-numéricas em X!")
 
-    print(f"Total de amostras: {len(df)}")
+    print(f"Total de amostras: {len(df):,}")
     print(f"Classes do target: {list(le_target.classes_)}")
     print(f"Distribuição:\n{df[TARGET].value_counts()}")
 
     return df, encoders
 
+
 def treinar_modelo(df):
     """Treina o Random Forest e avalia."""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("TREINANDO MODELO RANDOM FOREST")
-    print("="*60)
+    print("=" * 60)
 
     X = df[FEATURES].copy()
     y = df[TARGET].copy()
@@ -101,8 +111,8 @@ def treinar_modelo(df):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y,
     )
-    print(f"Treino: {len(X_train)} amostras")
-    print(f"Teste:  {len(X_test)} amostras")
+    print(f"Treino: {len(X_train):,} amostras")
+    print(f"Teste:  {len(X_test):,} amostras")
 
     # Modelo
     print("\nTreinando Random Forest (pode demorar 1-2 minutos)...")
@@ -120,15 +130,16 @@ def treinar_modelo(df):
     y_pred = modelo.predict(X_test)
 
     # Métricas
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("RESULTADOS")
-    print("="*60)
+    print("=" * 60)
     print(f"\nAcurácia: {accuracy_score(y_test, y_pred):.4f}")
     print(f"F1-Score (weighted): {f1_score(y_test, y_pred, average='weighted'):.4f}")
     print("\nRelatório por classe:")
     print(classification_report(y_test, y_pred))
 
     return modelo, X_test, y_test, y_pred
+
 
 def plotar_matriz_confusao(y_test, y_pred, encoders):
     print("\nGerando matriz de confusão...")
@@ -150,6 +161,7 @@ def plotar_matriz_confusao(y_test, y_pred, encoders):
     plt.close()
     print(f"  -> Salvo: {caminho}")
 
+
 def plotar_importancia_features(modelo):
     print("\nGerando gráfico de importância das features...")
     importancias = pd.DataFrame({
@@ -158,8 +170,8 @@ def plotar_importancia_features(modelo):
     }).sort_values("importancia", ascending=True)
 
     plt.figure(figsize=(10, 6))
-    sns.barplot(data=importancias, x="importancia", y="feature", palette="viridis",
-                hue="feature", legend=False)
+    sns.barplot(data=importancias, x="importancia", y="feature",
+                palette="viridis", hue="feature", legend=False)
     plt.title("Importância das Features - Random Forest")
     plt.xlabel("Importância")
     plt.ylabel("")
@@ -172,6 +184,7 @@ def plotar_importancia_features(modelo):
     print("\nTop 5 features mais importantes:")
     print(importancias.tail(5).to_string(index=False))
 
+
 def salvar_modelo(modelo, encoders):
     print("\nSalvando modelo e encoders...")
     os.makedirs(PASTA_MODELO, exist_ok=True)
@@ -180,16 +193,17 @@ def salvar_modelo(modelo, encoders):
     print(f"  -> Modelo salvo em: {PASTA_MODELO}/modelo_rf.pkl")
     print(f"  -> Encoders salvos em: {PASTA_MODELO}/encoders.pkl")
 
+
 if __name__ == "__main__":
     df = carregar_dados()
     df_prep, encoders = preparar_dados(df)
     modelo, X_test, y_test, y_pred = treinar_modelo(df_prep)
 
-    # ORDEM CORRIGIDA: salvar primeiro, plotar depois
+    # Ordem: salvar primeiro, plotar depois
     salvar_modelo(modelo, encoders)
     plotar_matriz_confusao(y_test, y_pred, encoders)
     plotar_importancia_features(modelo)
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("MACHINE LEARNING CONCLUÍDO!")
-    print("="*60)
+    print("=" * 60)
