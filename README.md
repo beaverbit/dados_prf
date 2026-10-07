@@ -1,3 +1,7 @@
+![Python](https://img.shields.io/badge/Python-3.14-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-red)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-orange)
+
 # Análise de Acidentes nas Rodovias Federais do Paraná
 
 Pipeline completo de Ciência de Dados aplicado aos dados abertos de acidentes da **Polícia Rodoviária Federal (PRF)**, com análise exploratória, dashboard interativo e modelo de Machine Learning para previsão de gravidade.
