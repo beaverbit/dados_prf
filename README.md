@@ -1,7 +1,5 @@
 # Análise de Acidentes nas Rodovias Federais do Paraná
 
-Trabalho de Conclusão de Curso (TCC) do curso de **Tecnologia em Sistemas para Internet** da **UTFPR — Campus Toledo**.
-
 Pipeline completo de Ciência de Dados aplicado aos dados abertos de acidentes da **Polícia Rodoviária Federal (PRF)**, com análise exploratória, dashboard interativo e modelo de Machine Learning para previsão de gravidade.
 
 ---
@@ -20,7 +18,7 @@ Pipeline completo de Ciência de Dados aplicado aos dados abertos de acidentes d
 ## Arquitetura do Projeto
 
 ```
-tcc_utfpr/
+dados_prf/
 │
 ├── dados_brutos/              # CSVs originais da PRF (não versionados)
 ├── dados_tratados/            # Dados limpos e resultados (não versionados)
@@ -60,8 +58,8 @@ tcc_utfpr/
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/beaverbit/tcc_utfpr.git
-cd tcc_utfpr
+git clone https://github.com/beaverbit/dados_prf.git
+cd dados_prf
 ```
 
 ### 2. Crie as pastas necessárias
@@ -155,16 +153,3 @@ O modelo demonstrou ser sensível aos fatores de risco conhecidos na literatura 
 - BRASIL. Polícia Rodoviária Federal. **Dados Abertos da PRF**. Disponível em: https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos
 - PEDREGOSA, F. et al. **Scikit-learn: Machine Learning in Python**. JMLR, 2011.
 - MCKINNEY, W. **Python for Data Analysis**. O'Reilly Media, 2022.
-
----
-
-## Autor
-
-**Jhonatan Lucas Santos**
-- Curso de Tecnologia em Sistemas para Internet — UTFPR Campus Toledo
-
----
-
-## Licença
-
-Este projeto é de uso acadêmico. Os dados são de domínio público (PRF).
