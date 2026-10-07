@@ -13,26 +13,19 @@ build/
 dist/
 *.egg-info/
 
-# Jupyter
-.ipynb_checkpoints/
-
-# Dados (grandes demais para o GitHub)
+# Dados (não versionar)
 dados_brutos/
-dados_tratados/*.csv
-*.csv
-!requirements.txt
+dados_tratados/
+modelo/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 
-# Sistema operacional
+# SO
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-
-# Modelo treinado (grande demais para o GitHub)
-modelo/
+# Jupyter
+.ipynb_checkpoints/
