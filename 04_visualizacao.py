@@ -1,7 +1,9 @@
 # 04_visualizacao.py
-# Objetivo: Gerar os gráficos do TCC e salvar em imagens/.
+# Objetivo: Gerar os gráficos estáticos dos acidentes e salvar em imagens/.
 
 import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
@@ -15,7 +17,9 @@ plt.rcParams["font.size"] = 11
 ARQ_ENTRADA = os.path.join("dados_tratados", "acidentes_limpos.csv")
 PASTA_IMAGENS = "imagens"
 
-UF_FOCO = "PR"  # mude para None se quiser Brasil todo
+# Recorte geográfico (None para Brasil, "PR" para Paraná)
+UF_FOCO = "PR"
+
 
 def carregar_dados():
     print("Carregando dados limpos...")
@@ -28,8 +32,9 @@ def carregar_dados():
     )
     if UF_FOCO:
         df = df[df["uf"] == UF_FOCO].copy()
-        print(f"Filtrado para UF={UF_FOCO}: {len(df)} linhas")
+        print(f"Filtrado para UF={UF_FOCO}: {len(df):,} linhas")
     return df
+
 
 def salvar(nome):
     os.makedirs(PASTA_IMAGENS, exist_ok=True)
@@ -38,6 +43,7 @@ def salvar(nome):
     plt.savefig(caminho, dpi=150, bbox_inches="tight")
     plt.close()
     print(f"  -> Salvo: {caminho}")
+
 
 # GRÁFICO 1: Acidentes e mortos por ano
 def grafico_por_ano(df):
@@ -63,17 +69,20 @@ def grafico_por_ano(df):
     fig.legend(loc="upper left", bbox_to_anchor=(0.1, 0.9))
     salvar("01_acidentes_por_ano.png")
 
+
 # GRÁFICO 2: Acidentes por mês
 def grafico_por_mes(df):
     print("\nGerando gráfico 2: Acidentes por mês...")
     resumo = df.groupby("mes").agg(total=("gravidade", "count")).reset_index()
 
     plt.figure(figsize=(12, 6))
-    sns.barplot(data=resumo, x="mes", y="total", palette="viridis", hue="mes", legend=False)
+    sns.barplot(data=resumo, x="mes", y="total",
+                palette="viridis", hue="mes", legend=False)
     plt.title(f"Distribuição de acidentes por mês — UF: {UF_FOCO}")
     plt.xlabel("Mês")
     plt.ylabel("Total de acidentes")
     salvar("02_acidentes_por_mes.png")
+
 
 # GRÁFICO 3: Acidentes por dia da semana
 def grafico_por_dia_semana(df):
@@ -81,16 +90,20 @@ def grafico_por_dia_semana(df):
     ordem = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira",
              "sexta-feira", "sábado", "domingo"]
     resumo = df.groupby("dia_semana").agg(total=("gravidade", "count")).reset_index()
-    resumo["dia_semana"] = pd.Categorical(resumo["dia_semana"], categories=ordem, ordered=True)
+    resumo["dia_semana"] = pd.Categorical(
+        resumo["dia_semana"], categories=ordem, ordered=True
+    )
     resumo = resumo.sort_values("dia_semana")
 
     plt.figure(figsize=(12, 6))
-    sns.barplot(data=resumo, x="dia_semana", y="total", palette="rocket", hue="dia_semana", legend=False)
+    sns.barplot(data=resumo, x="dia_semana", y="total",
+                palette="rocket", hue="dia_semana", legend=False)
     plt.title(f"Acidentes por dia da semana — UF: {UF_FOCO}")
     plt.xlabel("Dia da semana")
     plt.ylabel("Total de acidentes")
     plt.xticks(rotation=30)
     salvar("03_acidentes_por_dia_semana.png")
+
 
 # GRÁFICO 4: Acidentes e taxa de fatalidade por hora
 def grafico_por_hora(df):
@@ -117,6 +130,7 @@ def grafico_por_hora(df):
     fig.legend(loc="upper left", bbox_to_anchor=(0.1, 0.9))
     salvar("04_acidentes_por_hora.png")
 
+
 # GRÁFICO 5: Acidentes por condição meteorológica
 def grafico_condicao_meteorologica(df):
     print("\nGerando gráfico 5: Condição meteorológica...")
@@ -125,12 +139,13 @@ def grafico_condicao_meteorologica(df):
     ).reset_index().sort_values("total", ascending=False)
 
     plt.figure(figsize=(12, 6))
-    sns.barplot(data=resumo, x="total", y="condicao_metereologica", palette="coolwarm",
-                hue="condicao_metereologica", legend=False)
+    sns.barplot(data=resumo, x="total", y="condicao_metereologica",
+                palette="coolwarm", hue="condicao_metereologica", legend=False)
     plt.title(f"Acidentes por condição meteorológica — UF: {UF_FOCO}")
     plt.xlabel("Total de acidentes")
     plt.ylabel("Condição meteorológica")
     salvar("05_condicao_meteorologica.png")
+
 
 # GRÁFICO 6: Taxa de fatalidade por tipo de pista
 def grafico_tipo_pista(df):
@@ -155,20 +170,22 @@ def grafico_tipo_pista(df):
     plt.title(f"Acidentes e taxa de fatalidade por tipo de pista — UF: {UF_FOCO}")
     salvar("06_tipo_pista.png")
 
-# GRÁFICO 7: Top 10 causas de acidentes
+
+# GRÁFICO 7: Causas de acidente
 def grafico_top_causas(df):
-    print("\nGerando gráfico 7: Top 10 causas...")
+    print("\nGerando gráfico 7: Principais causas...")
     resumo = df.groupby("causa_acidente").agg(
         total=("gravidade", "count"),
     ).reset_index().sort_values("total", ascending=False).head(10)
 
     plt.figure(figsize=(12, 7))
-    sns.barplot(data=resumo, x="total", y="causa_acidente", palette="flare",
-                hue="causa_acidente", legend=False)
-    plt.title(f"Top 10 causas de acidentes — UF: {UF_FOCO}")
+    sns.barplot(data=resumo, x="total", y="causa_acidente",
+                palette="flare", hue="causa_acidente", legend=False)
+    plt.title(f"Principais causas de acidentes — UF: {UF_FOCO}")
     plt.xlabel("Total de acidentes")
     plt.ylabel("")
-    salvar("07_top_causas.png")
+    salvar("07_principais_causas.png")
+
 
 # GRÁFICO 8: Distribuição de gravidade
 def grafico_gravidade(df):
@@ -176,8 +193,12 @@ def grafico_gravidade(df):
     resumo = df["gravidade"].value_counts().reset_index()
     resumo.columns = ["gravidade", "total"]
 
-    cores = {"Sem Vítimas": "#2ecc71", "Leve": "#f1c40f",
-             "Grave": "#e67e22", "Fatal": "#c0392b"}
+    cores = {
+        "Sem Vítimas": "#2ecc71",
+        "Leve": "#f1c40f",
+        "Grave": "#e67e22",
+        "Fatal": "#c0392b",
+    }
     cores_lista = [cores[g] for g in resumo["gravidade"]]
 
     plt.figure(figsize=(10, 6))
@@ -185,6 +206,7 @@ def grafico_gravidade(df):
             colors=cores_lista, startangle=90, textprops={"fontsize": 12})
     plt.title(f"Distribuição de gravidade dos acidentes — UF: {UF_FOCO}")
     salvar("08_gravidade.png")
+
 
 if __name__ == "__main__":
     df = carregar_dados()
@@ -198,7 +220,7 @@ if __name__ == "__main__":
     grafico_top_causas(df)
     grafico_gravidade(df)
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("GRÁFICOS GERADOS COM SUCESSO!")
     print(f"Todos salvos em: {PASTA_IMAGENS}/")
-    print("="*60)
+    print("=" * 60)
