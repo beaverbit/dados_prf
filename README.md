@@ -94,7 +94,7 @@ pip install -r requirements.txt
 
 Acesse [Dados Abertos da PRF](https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos/dados-abertos-da-prf) e baixe os arquivos de **Acidentes** dos anos 2021 a 2026. Salve todos em `dados_brutos/`.
 
-> ⚠️ **Nota:** o modelo treinado (`modelo/modelo_rf.pkl`) **não está versionado** por exceder o limite de 100 MB do GitHub. Ele será gerado automaticamente no passo 6.
+> **Nota:** o modelo treinado (`modelo/modelo_rf.pkl`) **não está versionado** por exceder o limite de 100 MB do GitHub. Ele será gerado automaticamente no passo 6.
 
 ### 6. Execute o pipeline na ordem
 
@@ -151,6 +151,35 @@ O modelo demonstrou ser sensível aos fatores de risco conhecidos na literatura 
 ![Previsão](imagens/dashboard_previsao.png)
 
 ---
+## Metodologia
+
+A análise segue as etapas clássicas de um pipeline de Ciência de Dados:
+
+1. **Obtenção dos dados** — coleta dos arquivos públicos da PRF
+2. **Pré-processamento** — limpeza, padronização e enriquecimento
+3. **Análise Exploratória (EDA)** — estatísticas descritivas e visualizações
+4. **Modelagem** — Random Forest Classifier para previsão de gravidade
+5. **Avaliação** — métricas de classificação e validação cruzada
+
+O recorte geográfico adotado foi o estado do Paraná (PR), em razão da
+disponibilidade e qualidade dos dados no período analisado.
+
+## Limitações
+
+- **Desbalanceamento de classes:** a classe "Fatal" representa apenas 4,5%
+  do dataset, o que impacta o desempenho do modelo nas classes minoritárias.
+- **Variáveis ausentes:** dados sobre condições do veículo e do condutor
+  (CNH, tempo de habilitação, uso de cinto) não estão disponíveis na base
+  pública da PRF.
+- **Sazonalidade:** o período de 2021-2026 inclui anos atípicos
+  (pandemia e pós-pandemia), o que pode influenciar os padrões observados.
+
+## Trabalhos Futuros
+
+- Incorporar variáveis socioeconômicas (IDH, densidade populacional do trecho)
+- Testar algoritmos de gradient boosting (XGBoost, LightGBM) para comparação
+- Desenvolver modelo de séries temporais para previsão de acidentes
+- Implementar dashboard com dados em tempo real (integração com API da PRF)
 
 ## Referências
 
